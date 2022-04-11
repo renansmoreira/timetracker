@@ -7,11 +7,11 @@ export class Id {
     this._value = uuidv4();
   }
 
-  public toString(): string {
+  get value(): string {
     return this._value;
   }
 
-  get value(): string {
+  toString(): string {
     return this._value;
   }
 }
