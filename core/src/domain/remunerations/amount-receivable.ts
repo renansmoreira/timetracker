@@ -1,14 +1,17 @@
+import { Currency } from './currency';
+import { Money } from './money';
+
 const ONE_HOUR_IN_MS = 3600000;
 
 export class AmountReceivable {
-  private _value: number;
+  private _amount: Money;
 
   constructor(timeInMs: number, valuePerHour: number) {
     const timeInHours = timeInMs / ONE_HOUR_IN_MS;
-    this._value = timeInHours * valuePerHour;
+    this._amount = new Money(timeInHours * valuePerHour, Currency.REAL);
   }
 
-  get value(): number {
-    return this._value;
+  get amount(): Money {
+    return this._amount;
   }
 }
