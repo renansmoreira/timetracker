@@ -2,13 +2,18 @@
   "name": "timetracker-core",
   "version": "0.0.1",
   "description": "Simple time-tracker for working hours",
-  "main": "",
+  "type": "module",
+  "main": "lib/index.js",
   "scripts": {
     "build": "npx tsc",
     "lint": "npx eslint . --fix",
     "test": "npx mocha"
   },
-  "keywords": [],
+  "keywords": [
+    "timetracker",
+    "timer",
+    "tracker"
+  ],
   "author": "Renan S Moreira",
   "license": "ISC",
   "repository": {
@@ -19,6 +24,10 @@
     "url": "https://github.com/renansmoreira/timetracker/issues"
   },
   "homepage": "https://github.com/renansmoreira/timetracker",
+  "engines": {
+    "node": ">=16.14.1",
+    "npm": ">=8.5.0"
+  },
   "dependencies": {
     "lowdb": "^3.0.0",
     "uuid": "^8.3.2"

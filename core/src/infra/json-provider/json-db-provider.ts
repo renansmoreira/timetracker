@@ -1,5 +1,5 @@
-import { JSONFile, Low } from 'lowdb';
-import { Id } from '../../domain/id';
+import { JSONFile } from '../../../node_modules/lowdb/lib/index';
+import { Low } from '../../../node_modules/lowdb/lib/Low';
 import { Timer } from '../../domain/timers/timer';
 import { DatabaseSchema, TimerSchema } from './json-database-schema';
 
