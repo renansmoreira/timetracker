@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class Id {
   private _value = '';
 
-  constructor() {
-    this._value = uuidv4();
+  constructor(id?: string) {
+    this._value = id || uuidv4();
   }
 
   get value(): string {

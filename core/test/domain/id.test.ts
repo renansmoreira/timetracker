@@ -20,5 +20,14 @@ describe('Id', () => {
     expect(stringValue).to.be.true;
   });
 
+  it('should be created with value', () => {
+    const expectedValue = 'random';
+    const newId = new Id(expectedValue);
+
+    const stringValue = newId.toString();
+
+    expect(stringValue).to.be.equal(expectedValue);
+  })
+
   it('should be able to be compared');
 });
