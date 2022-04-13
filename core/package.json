@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/renansmoreira/timetracker/issues"
   },
-  "homepage": "https://github.com/renansmoreira/timetracker",
+  "homepage": "https://github.com/renansmoreira/timetracker/core",
   "engines": {
     "node": ">=16.14.1",
     "npm": ">=8.5.0"

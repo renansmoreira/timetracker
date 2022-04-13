@@ -1,8 +1,8 @@
-import { Id } from '../../domain/id';
-import { Timer } from '../../domain/timers/timer';
-import { Timers } from '../../domain/timers/timers';
-import { TimerSchema } from './json-database-schema';
-import { JsonDbProvider } from './json-db-provider';
+import { Id } from '../../domain/id.js';
+import { Timer } from '../../domain/timers/timer.js';
+import { Timers } from '../../domain/timers/timers.js';
+import { TimerSchema } from './json-database-schema.js';
+import { JsonDbProvider } from './json-db-provider.js';
 
 function map(timerSchema?: TimerSchema): Timer {
   return new Timer();

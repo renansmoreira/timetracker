@@ -1,7 +1,7 @@
-import { JSONFile } from '../../../node_modules/lowdb/lib/index';
-import { Low } from '../../../node_modules/lowdb/lib/Low';
-import { Timer } from '../../domain/timers/timer';
-import { DatabaseSchema, TimerSchema } from './json-database-schema';
+import { JSONFile } from '../../../node_modules/lowdb/lib/adapters/JSONFile.js';
+import { Low } from '../../../node_modules/lowdb/lib/Low.js';
+import { Timer } from '../../domain/timers/timer.js';
+import { DatabaseSchema, TimerSchema } from './json-database-schema.js';
 
 export class JsonDbProvider {
   private _database: Low<DatabaseSchema>;

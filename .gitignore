@@ -1,2 +1,5 @@
 node_modules/
-core/lib/
+core/src/**/*.d.ts
+core/src/**/*.js*
+core/test/**/*.d.ts
+core/test/**/*.js*

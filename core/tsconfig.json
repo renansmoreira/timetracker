@@ -4,7 +4,6 @@
     "sourceMap": true,
     "declaration": true,
     "emitDeclarationOnly": false,
-    "outDir": "./lib",
     "module": "ES2020"
   },
   "include": [

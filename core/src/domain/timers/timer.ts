@@ -1,6 +1,6 @@
-import { DateRepresentation } from '../date-representation';
-import { Id } from '../id';
-import { TimerNotStartedException } from './timer-not-started-exception';
+import { DateRepresentation } from '../date-representation.js';
+import { Id } from '../id.js';
+import { TimerNotStartedException } from './timer-not-started-exception.js';
 
 export class Timer {
   private _id: Id;

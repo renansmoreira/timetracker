@@ -1,5 +1,5 @@
-import { Currency } from './currency';
-import { Money } from './money';
+import { Currency } from './currency.js';
+import { Money } from './money.js';
 
 const ONE_HOUR_IN_MS = 3600000;
 
