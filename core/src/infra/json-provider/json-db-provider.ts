@@ -19,7 +19,8 @@ export class JsonDbProvider {
 
   async addTimer(timer: Timer): Promise<void> {
     this._database.data?.timers.push({
-      id: timer.id.toString()
+      id: timer.id.toString(),
+      startDate: timer.startDate?.timestamp || 0
     });
   }
 

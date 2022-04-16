@@ -1,3 +1,4 @@
+import { DateRepresentation } from '../../domain/date-representation.js';
 import { Id } from '../../domain/id.js';
 import { Timer } from '../../domain/timers/timer.js';
 import { Timers } from '../../domain/timers/timers.js';
@@ -5,7 +6,10 @@ import { TimerSchema } from './json-database-schema.js';
 import { JsonDbProvider } from './json-db-provider.js';
 
 function map(timerSchema?: TimerSchema): Timer {
-  return new Timer();
+  if (timerSchema)
+    return new Timer(new DateRepresentation(timerSchema.startDate));
+  else
+    return new Timer();
 }
 
 export class TimersJsonProvider implements Timers {

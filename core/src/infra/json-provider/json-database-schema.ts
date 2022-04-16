@@ -1,5 +1,6 @@
 export type TimerSchema = {
-  id: string
+  id: string,
+  startDate: number
 }
 
 export type DatabaseSchema = {
