@@ -10,19 +10,42 @@ const jsonDbProvider = new JsonDbProvider();
 const timers = new TimersJsonProvider(jsonDbProvider);
 
 app.get('/', (_req, res) => {
-  res.send('Hello World!');
+  res.json({
+    type: '',
+    id: '',
+    attributes: {
+    },
+    relationships: {},
+    links: {
+      self: '/',
+      timers: '/timers',
+      customers: '/customers'
+    }
+  });
 });
 
-app.get('timer/:id', async (req, res) => {
+app.get('timers/:id', async (req, res) => {
   const timer = await timers.get(new Id(req.params.id));
 
-  res.json(Object.assign({}, timer, {
-    _links: {
-      self: {
-        href: `/timer/${timer.id}`
-      }
+  res.json({
+    meta: {
+      template: [
+        { name: 'id', type: 'string', displayName: 'Id' },
+        { name: 'startDate', type: 'datetime', displayName: 'Start date' },
+        { name: 'endDate', type: 'datetime', displayName: 'End date' }
+      ]
+    },
+    type: 'timers',
+    id: timer.id,
+    attributes: {
+      startDate: timer.startDate,
+      endDate: timer.endDate
+    },
+    relationships: {},
+    links: {
+      self: `/timer/${timer.id}`
     }
-  }));
+  });
 })
 
 app.post('timer', async (_req, res) => {
@@ -31,11 +54,22 @@ app.post('timer', async (_req, res) => {
   await timers.save(timer);
 
   res.json({
+    meta: {
+      template: [
+        { name: 'id', type: 'string', displayName: 'Id' },
+        { name: 'startDate', type: 'datetime', displayName: 'Start date' },
+        { name: 'endDate', type: 'datetime', displayName: 'End date' }
+      ]
+    },
+    type: 'timers',
     id: timer.id,
-    _links: {
-      self: {
-        href: `/timer/${timer.id}`
-      }
+    attributes: {
+      startDate: timer.startDate,
+      endDate: timer.endDate
+    },
+    relationships: {},
+    links: {
+      self: `/timer/${timer.id}`
     }
   });
 });
