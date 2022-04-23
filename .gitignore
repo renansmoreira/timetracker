@@ -3,3 +3,17 @@ core/src/**/*.d.ts
 core/src/**/*.js*
 core/test/**/*.d.ts
 core/test/**/*.js*
+
+.pnp
+.pnp.js
+
+coverage/
+build/
+
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
