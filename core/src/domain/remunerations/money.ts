@@ -1,4 +1,4 @@
-import { Currency } from './currency.js';
+import { Currency } from './currency';
 
 export class Money {
   private _amount: number;

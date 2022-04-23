@@ -28,4 +28,13 @@ describe('Date representation', () => {
 
     expect(result.timestamp).to.be.equal(expectedResultInMs);
   });
+
+  it('should get timestamp in date format', () => {
+    const timestamp = 1650247415;
+    const expectedDate = new Date(2022, 4, 18, 2, 3, 35);
+
+    const newDate = new DateRepresentation(timestamp);
+
+    expect(newDate.date).to.be.equal(expectedDate);
+  });
 });

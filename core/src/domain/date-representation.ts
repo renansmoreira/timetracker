@@ -12,4 +12,8 @@ export class DateRepresentation {
   get timestamp(): number {
     return this._timestamp;
   }
+
+  get date(): Date {
+    return new Date(this._timestamp * 1000);
+  }
 }

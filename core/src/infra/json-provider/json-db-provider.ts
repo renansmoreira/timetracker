@@ -1,34 +1,23 @@
-import { JSONFile } from '../../../node_modules/lowdb/lib/adapters/JSONFile.js';
-import { Low } from '../../../node_modules/lowdb/lib/Low.js';
-import { Timer } from '../../domain/timers/timer.js';
-import { DatabaseSchema, TimerSchema } from './json-database-schema.js';
+import { JsonDB } from 'node-json-db';
+import { Config } from 'node-json-db/dist/lib/JsonDBConfig';
+import { Timer } from '../../domain/timers/timer';
+import { TimerSchema } from './json-database-schema';
 
 export class JsonDbProvider {
-  private _database: Low<DatabaseSchema>;
+  private _database: JsonDB;
 
   constructor() {
-    this._database = new Low<DatabaseSchema>(new JSONFile<DatabaseSchema>(''));
-    this._database.data ||= {
-      timers: []
-    };
+    this._database = new JsonDB(new Config('./database.json', true, false, '/'));
   }
 
   async getTimers(): Promise<TimerSchema[]> {
-    return Promise.resolve(this._database.data?.timers!);
+    return Promise.resolve(this._database.getData('/timers'));
   }
 
   async addTimer(timer: Timer): Promise<void> {
-    this._database.data?.timers.push({
+    this._database.push('/timers', [{
       id: timer.id.toString(),
       startDate: timer.startDate?.timestamp || 0
-    });
-  }
-
-  async write(): Promise<void> {
-    this._database.write();
-  }
-
-  get data(): DatabaseSchema {
-    return this._database.data!;
+    }], false);
   }
 }

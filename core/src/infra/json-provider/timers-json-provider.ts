@@ -1,9 +1,9 @@
-import { DateRepresentation } from '../../domain/date-representation.js';
-import { Id } from '../../domain/id.js';
-import { Timer } from '../../domain/timers/timer.js';
-import { Timers } from '../../domain/timers/timers.js';
-import { TimerSchema } from './json-database-schema.js';
-import { JsonDbProvider } from './json-db-provider.js';
+import { DateRepresentation } from '../../domain/date-representation';
+import { Id } from '../../domain/id';
+import { Timer } from '../../domain/timers/timer';
+import { Timers } from '../../domain/timers/timers';
+import { TimerSchema } from './json-database-schema';
+import { JsonDbProvider } from './json-db-provider';
 
 function map(timerSchema?: TimerSchema): Timer {
   if (timerSchema)
@@ -19,6 +19,11 @@ export class TimersJsonProvider implements Timers {
     this._jsonDbProvider = jsonDbProvider;
   }
 
+  async getAll(): Promise<Timer[]> {
+    const timers = await this._jsonDbProvider.getTimers();
+    return Promise.resolve(timers.map(map));
+  }
+
   async get(timerId: Id): Promise<Timer> {
     const timers = await this._jsonDbProvider.getTimers();
     const timer = timers.find((timer) => timer.id === timerId.toString());
@@ -27,9 +32,7 @@ export class TimersJsonProvider implements Timers {
   }
 
   async save(timer: Timer): Promise<void> {
-    this._jsonDbProvider.addTimer(timer);
-    await this._jsonDbProvider.write();
-
+    await this._jsonDbProvider.addTimer(timer);
     return Promise.resolve();
   }
 }
