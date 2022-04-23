@@ -1,5 +1,6 @@
-import React, { FormEventHandler, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import Modal from '../../../components/modal/Modal';
 import { JsonApiResponse } from '../../../responses/json-api/JsonApiResponse';
 import { TimerSchema } from '../TimerSchema';
 
@@ -57,37 +58,27 @@ export default function Timer(props: {
   const cancel = () => window.history.back();
 
   return (
-    <div className="modal is-active">
-      <div className="modal-background"></div>
-      <div className="modal-content">
-        <div className="card">
-          <div className="card-content">
-            <div className="content">
-              <form onSubmit={save}>
-                {timer.meta.template.map((template) => (
-                  <div key={template.name} className="field">
-                    <label className="label" htmlFor={`el_${template.name}`}>{template.displayName}</label>
-                    <div className="control">
-                      <input className="input"
-                        id={`el_${template.name}`}
-                        type={template.type === 'datetime' ? 'date' : 'text'}
-                        placeholder={template.displayName}
-                        name={template.name}
-                        disabled={template.name === 'id'}
-                        onChange={(event) => handleChange(template.name, event)}
-                        value={(timer.attributes || {})[template.name]} />
-                    </div>
-                  </div>
-                ))}
-                <button className="button is-primary" type="submit">Save</button>
-                <button className="button" type="button" onClick={cancel}>Cancel</button>
-              </form>
+    <Modal cancelHandler={cancel}>
+      <form onSubmit={save}>
+        {timer.meta.template.map((template) => (
+          <div key={template.name} className="field">
+            <label className="label" htmlFor={`el_${template.name}`}>{template.displayName}</label>
+            <div className="control">
+              <input className="input"
+                id={`el_${template.name}`}
+                type={template.type === 'datetime' ? 'date' : 'text'}
+                placeholder={template.displayName}
+                name={template.name}
+                disabled={template.name === 'id'}
+                onChange={(event) => handleChange(template.name, event)}
+                value={(timer.attributes || {})[template.name]} />
             </div>
           </div>
-        </div>
-      </div>
-      <button className="modal-close is-large" aria-label="close" onClick={cancel}></button>
-    </div>
+        ))}
+        <button className="button is-primary" type="submit">Save</button>
+        <button className="button" type="button" onClick={cancel}>Cancel</button>
+      </form>
+    </Modal>
   );
 }
 
