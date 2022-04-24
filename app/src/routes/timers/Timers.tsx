@@ -13,6 +13,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 
 export default function Timers() {
   const [isLoading, setIsLoading] = useState(true);
+  const [allowedMethods, setAllowedMethods] = useState<string[]>([]);
   const [timers, setTimers] = useState<JsonApiResponse<TimerSchema>>({
     meta: {
       template: {
@@ -21,7 +22,6 @@ export default function Timers() {
     },
     data: []
   });
-  const [allowedMethods, setAllowedMethods] = useState<string[]>([]);
   const location = useLocation();
 
   useEffect(() => {
