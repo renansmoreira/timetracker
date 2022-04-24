@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { DateRepresentation } from '../../../src/domain/date-representation';
+import { Id } from '../../../src/domain/id';
 import { Timer } from '../../../src/domain/timers/timer';
 import { TimerNotStartedException } from '../../../src/domain/timers/timer-not-started-exception';
 
@@ -42,7 +43,7 @@ describe('Timer', () => {
     const baseTime = Date.now();
     const startPastTime = baseTime - 50000;
     const expectedTimeInMs = baseTime - startPastTime;
-    const timer = new Timer(new DateRepresentation(startPastTime));
+    const timer = new Timer(new Id('1'), new DateRepresentation(startPastTime));
 
     const elapsedTime = timer.end();
 

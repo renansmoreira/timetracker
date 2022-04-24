@@ -7,8 +7,8 @@ export class Timer {
   private _startDate?: DateRepresentation;
   private _endDate?: DateRepresentation;
 
-  constructor(startDate?: DateRepresentation) {
-    this._id = new Id();
+  constructor(id?: Id, startDate?: DateRepresentation) {
+    this._id = id || new Id();
     this._startDate = startDate || undefined;
   }
 

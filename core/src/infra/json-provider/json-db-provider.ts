@@ -15,9 +15,9 @@ export class JsonDbProvider {
   }
 
   async addTimer(timer: Timer): Promise<void> {
-    this._database.push('/timers', [{
+    this._database.push('/timers[]', {
       id: timer.id.toString(),
       startDate: timer.startDate?.timestamp || 0
-    }], false);
+    }, true);
   }
 }

@@ -7,7 +7,8 @@ import { JsonDbProvider } from './json-db-provider';
 
 function map(timerSchema?: TimerSchema): Timer {
   if (timerSchema)
-    return new Timer(new DateRepresentation(timerSchema.startDate));
+    return new Timer(new Id(timerSchema.id),
+      new DateRepresentation(timerSchema.startDate));
   else
     return new Timer();
 }
@@ -26,7 +27,7 @@ export class TimersJsonProvider implements Timers {
 
   async get(timerId: Id): Promise<Timer> {
     const timers = await this._jsonDbProvider.getTimers();
-    const timer = timers.find((timer) => timer.id === timerId.toString());
+    const timer = timers.find((timer) => timer.id.toString() === timerId.toString());
 
     return Promise.resolve(map(timer));
   }
