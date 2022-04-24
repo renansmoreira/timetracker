@@ -25,10 +25,12 @@ router.get('/timers', async (_req, res) => {
     .setHeader('Allow', 'GET, POST, PUT')
     .json({
       meta: {
-        template: [
-          { name: 'startDate', type: 'datetime', displayName: 'Start date' },
-          { name: 'endDate', type: 'datetime', displayName: 'End date' }
-        ]
+        template: {
+          GET: [
+            { name: 'startDate', type: 'datetime', displayName: 'Start date' },
+            { name: 'endDate', type: 'datetime', displayName: 'End date' }
+          ]
+        }
       },
       data,
       relationships: {},
@@ -43,17 +45,22 @@ router.get('/timers/:id', async (req, res) => {
 
   res.json({
     meta: {
-      template: [
-        { name: 'id', type: 'string', displayName: 'Id' },
-        { name: 'startDate', type: 'datetime', displayName: 'Start date' },
-        { name: 'endDate', type: 'datetime', displayName: 'End date' }
-      ]
+      template: {
+        POST: [
+          { name: 'startDate', type: 'datetime', displayName: 'Start date', editable: true }
+        ],
+        PUT: [
+          { name: 'id', type: 'string', displayName: 'Id' },
+          { name: 'startDate', type: 'datetime', displayName: 'Start date', editable: false },
+          { name: 'endDate', type: 'datetime', displayName: 'End date', editable: false }
+        ],
+      }
     },
     type: 'timers',
     id: timer.id.toString(),
     attributes: {
-      startDate: timer.startDate,
-      endDate: timer.endDate
+      startDate: timer.startDate?.timestamp,
+      endDate: timer.endDate?.timestamp
     },
     relationships: {},
     links: Links.new()
@@ -68,24 +75,29 @@ router.post('/timers', async (_req, res) => {
   await timers.save(timer);
 
   res.json({
-    meta: {
-      template: [
-        { name: 'id', type: 'string', displayName: 'Id' },
-        { name: 'startDate', type: 'datetime', displayName: 'Start date' },
-        { name: 'endDate', type: 'datetime', displayName: 'End date' }
-      ]
-    },
     type: 'timers',
     id: timer.id,
-    attributes: {
-      startDate: timer.startDate,
-      endDate: timer.endDate
-    },
     relationships: {},
     links: Links.new()
       .add(new Link('self', `/timers/${timer.id}`))
       .serialize()
   });
 });
+
+router.put('/timers/:id', async (req, res) => {
+  const timer = await timers.get(new Id(req.params.id));
+  timer.end();
+
+  await timers.save(timer);
+
+  res.json({
+    type: 'timers',
+    id: timer.id,
+    relationships: {},
+    links: Links.new()
+      .add(new Link('self', `/timers/${timer.id}`))
+      .serialize()
+  });
+})
 
 export default router;

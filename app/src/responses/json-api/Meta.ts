@@ -1,5 +1,7 @@
 import { Template } from './Template';
 
 export type Meta = {
-  template: Template[]
+  template: {
+    [key: string]: Template[]
+  }
 };
