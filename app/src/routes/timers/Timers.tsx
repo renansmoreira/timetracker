@@ -9,18 +9,25 @@ import TableHeaderColumn from '../../components/table/header/table-header-column
 import TableHeader from '../../components/table/header/table-header/TableHeader';
 import TableFooter from '../../components/table/footer/table-footer/TableFooter';
 import Table from '../../components/table/Table';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 export default function Timers() {
+  const [isLoading, setIsLoading] = useState(true);
   const [timers, setTimers] = useState<JsonApiResponse<TimerSchema>>({
     meta: {
-      template: []
+      template: {
+        GET: []
+      }
     },
     data: []
   });
   const [allowedMethods, setAllowedMethods] = useState<string[]>([]);
+  const location = useLocation();
 
   useEffect(() => {
+    if (location.pathname !== '/timers')
+      return;
+
     async function fetchTimers() {
       const response = await fetch('http://localhost:3100/timers', {
         method: 'GET',
@@ -31,13 +38,19 @@ export default function Timers() {
       const json = await response.json();
       setTimers(json);
       setAllowedMethods(response.headers.get('Allow')!.split(',').map((method) => method.trim()));
+      setIsLoading(false);
     }
 
     fetchTimers();
-  }, []);
+  }, [location]);
+
+  if (isLoading)
+    return (
+      <h2>Loading...</h2>
+    )
 
   return (
-    <div>
+    <>
       {allowedMethods.indexOf('POST') > -1 ? (
         <Link className="button is-link" to="/timers/add">Create new</Link>
       ) : ''}
@@ -45,7 +58,7 @@ export default function Timers() {
       <Table>
         <TableHeader>
           <TableLine>
-            {timers.meta.template.map((template) => (
+            {timers.meta.template['GET'].map((template) => (
               <TableHeaderColumn key={template.name}>{template.displayName}</TableHeaderColumn>
             ))}
             {allowedMethods.indexOf('PUT') > -1 ? (
@@ -72,7 +85,7 @@ export default function Timers() {
         </TableBody>
         <TableFooter>
           <TableLine>
-            {timers.meta.template.map((template) => (
+            {timers.meta.template['GET'].map((template) => (
               <TableColumn key={template.name}>{template.displayName}</TableColumn>
             ))}
             {allowedMethods.indexOf('PUT') > -1 ? (
@@ -83,6 +96,6 @@ export default function Timers() {
       </Table>
 
       <Outlet />
-    </div>
+    </>
   );
 }
