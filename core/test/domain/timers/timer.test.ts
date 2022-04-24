@@ -32,11 +32,11 @@ describe('Timer', () => {
 
   it('should not be able to end a not started timer', () => {
     const timer = new Timer();
-    const expectedError = TimerNotStartedException;
+    const expectedError = new TimerNotStartedException();
 
     const act = () => timer.end();
 
-    expect(act).to.throw(expectedError);
+    expect(act).to.throw(expectedError.message);
   });
 
   it('should return the elapsed time', () => {
