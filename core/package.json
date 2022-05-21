@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx tsc",
     "lint": "npx eslint . --fix",
-    "test": "npx mocha"
+    "test": "npx mocha",
+    "migrate:latest": "npx knex --knexfile src/infra/knex/knexfile.ts migrate:latest"
   },
   "keywords": [
     "timetracker",
@@ -28,7 +29,9 @@
     "npm": ">=8.5.0"
   },
   "dependencies": {
+    "knex": "^2.0.0",
     "node-json-db": "^1.5.0",
+    "sqlite3": "^5.0.8",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
