@@ -45,21 +45,19 @@ export default function Customer({ operation }: Props) {
   }, [operation, params.id]);
 
   const getBody = () => {
-    if (operation === 'POST')
-      return '';
-
     const body = {
-      id: customer.id
+      id: customer.id,
+      name: customer.attributes?.name
     };
     return JSON.stringify(body);
   }
 
   const save = async (event: React.SyntheticEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    await fetch('http://localhost:3100/customers', {
+    await fetch(`http://localhost:3100/customers/${params.id || ''}`, {
       method: operation,
       headers: {
-        'Content-Type': 'application/vnd.api+json'
+        'Content-Type': 'application/json'
       },
       body: getBody()
     });
