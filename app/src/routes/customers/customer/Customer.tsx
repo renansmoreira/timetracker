@@ -30,8 +30,10 @@ export default function Customer({ operation }: Props) {
 
   useEffect(() => {
     async function fetchCustomer() {
-      const id = operation === 'PUT' ? params.id : undefined;
-      const response = await fetch(`http://localhost:3100/customers/${id}`, {
+      if (operation === 'POST')
+        return;
+
+      const response = await fetch(`http://localhost:3100/customers/${params.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/vnd.api+json'
