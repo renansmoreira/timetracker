@@ -17,3 +17,6 @@ build/
 .env.production.local
 
 npm-debug.log*
+
+database.json
+dev.sqlite3
