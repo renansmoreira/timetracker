@@ -6,8 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import 'bulma/css/bulma.min.css';
 import Timers from './routes/timers/Timers';
-import Customers from './routes/Customers';
+import Customers from './routes/customers/Customers';
 import Timer from './routes/timers/timer/Timer';
+import Customer from './routes/customers/customer/Customer';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,7 +22,10 @@ root.render(
             <Route path="add" element={<Timer operation="POST" />} />
             <Route path=":id" element={<Timer operation="PUT" />} />
           </Route>
-          <Route path="customers" element={<Customers />} />
+          <Route path="customers" element={<Customers />}>
+            <Route path="add" element={<Customer operation="POST" />} />
+            <Route path=":id" element={<Customer operation="PUT" />} />
+          </Route>
         </Route>
       </Routes>
     </React.StrictMode>
