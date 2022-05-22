@@ -6,10 +6,10 @@ import { JsonApiResponse } from '../../../responses/json-api/JsonApiResponse';
 import { TimerSchema } from '../TimerSchema';
 
 interface Props {
-  operation: 'POST' | 'PUT'
+  operation: 'POST' | 'PUT';
 }
 
-export default function Timer(props: Props) {
+export default function Timer({ operation }: Props) {
   const params = useParams();
   const navigate = useNavigate();
   const [timer, setTimer] = useState<JsonApiResponse<TimerSchema>>({
@@ -27,8 +27,10 @@ export default function Timer(props: Props) {
 
   useEffect(() => {
     async function fetchTimer() {
-      const id = props.operation === 'PUT' ? params.id : undefined;
-      const response = await fetch(`http://localhost:3100/timers/${id}`, {
+      if (operation === 'POST')
+        return;
+
+      const response = await fetch(`http://localhost:3100/timers/${params.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/vnd.api+json'
@@ -42,7 +44,7 @@ export default function Timer(props: Props) {
   }, []);
 
   const getBody = () => {
-    if (props.operation === 'POST')
+    if (operation === 'POST')
       return '';
 
     const body = {
@@ -53,8 +55,8 @@ export default function Timer(props: Props) {
 
   const save = async (event: React.SyntheticEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    await fetch('http://localhost:3100/timers', {
-      method: props.operation,
+    await fetch(`http://localhost:3100/timers/${params.id || ''}`, {
+      method: operation,
       headers: {
         'Content-Type': 'application/vnd.api+json'
       },
@@ -64,12 +66,12 @@ export default function Timer(props: Props) {
   };
 
   const close = () => navigate(-1);
-  const submitLabel = props.operation === 'POST' ? 'Start' : 'Stop';
+  const submitLabel = operation === 'POST' ? 'Start' : 'Stop';
 
   return (
     <Modal cancelHandler={close}>
       <form onSubmit={save}>
-        {timer.meta.template[props.operation]
+        {timer.meta.template[operation]
           .map((template) => (
             <Editor key={template.name}
               template={template}

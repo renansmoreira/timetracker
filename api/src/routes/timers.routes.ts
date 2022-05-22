@@ -1,14 +1,14 @@
 import express from 'express';
 import { Id } from 'timetracker-core/src/domain/id';
 import { Timer } from 'timetracker-core/src/domain/timers/timer';
-import { JsonDbProvider } from 'timetracker-core/src/infra/json-provider/json-db-provider';
-import { TimersJsonProvider } from 'timetracker-core/src/infra/json-provider/timers-json-provider';
+import { KnexProvider } from 'timetracker-core/src/infra/knex/knex-provider';
+import { TimersKnex } from 'timetracker-core/src/infra/knex/timers-knex';
 import { Link } from '../serializers/json-api/link';
 import { Links } from '../serializers/json-api/links';
 
 const router = express.Router();
-const jsonDbProvider = new JsonDbProvider();
-const timers = new TimersJsonProvider(jsonDbProvider);
+const provider = new KnexProvider();
+const timers = new TimersKnex(provider);
 
 router.get('/timers', async (_req, res) => {
   const foundTimers = await timers.getAll();

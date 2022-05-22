@@ -6,7 +6,7 @@ import { JsonApiResponse } from '../../../responses/json-api/JsonApiResponse';
 import { CustomerSchema } from '../CustomerSchema';
 
 interface Props {
-  operation: 'POST' | 'PUT'
+  operation: 'POST' | 'PUT';
 }
 
 export default function Customer({ operation }: Props) {
