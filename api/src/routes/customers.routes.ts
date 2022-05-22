@@ -5,7 +5,7 @@ import { CustomersKnex } from 'timetracker-core/src/infra/knex/customers-knex';
 import { KnexProvider } from 'timetracker-core/src/infra/knex/knex-provider';
 import { Customer } from 'timetracker-core/src/domain/customers/customer';
 import { Id } from 'timetracker-core/src/domain/id';
-import { BaseError } from 'timetracker-core/src/domain/error/base.error';
+import { DomainError } from 'timetracker-core/src/domain/error/domain.error';
 
 const router = express.Router();
 const provider = new KnexProvider();
@@ -67,7 +67,7 @@ router.get('/customers/:id', async (req, res) => {
         .serialize()
     });
   } catch (error) {
-    const baseError: BaseError = error as BaseError;
+    const baseError: DomainError = error as DomainError;
     if (baseError.type === 'NotFoundError')
       return res.status(404).send();
 
@@ -106,7 +106,7 @@ router.put('/customers/:id', async (req, res) => {
         .serialize()
     });
   } catch (error) {
-    const baseError: BaseError = error as BaseError;
+    const baseError: DomainError = error as DomainError;
     if (baseError.type === 'NotFoundError')
       return res.status(404).send();
 
