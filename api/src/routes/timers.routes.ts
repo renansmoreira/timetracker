@@ -67,7 +67,7 @@ router.get('/timers/:id', async (req, res) => {
       .add(new Link('self', `/timer/${timer.id}`))
       .serialize()
   });
-})
+});
 
 router.post('/timers', async (_req, res) => {
   const timer = new Timer();
@@ -98,6 +98,6 @@ router.put('/timers/:id', async (req, res) => {
       .add(new Link('self', `/timers/${timer.id}`))
       .serialize()
   });
-})
+});
 
 export default router;
