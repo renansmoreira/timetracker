@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import CreateNew from '../../components/create-new/CreateNew';
 import Display from '../../components/display/Display';
 import RecordListing from '../../components/record-listing/RecordListing';
@@ -57,6 +57,8 @@ export default function Projects() {
           </TableLine>
         ))}
       </RecordListing>
+
+      <Outlet />
     </>
   );
 }

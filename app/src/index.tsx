@@ -10,6 +10,7 @@ import Customers from './routes/customers/Customers';
 import Timer from './routes/timers/timer/Timer';
 import Customer from './routes/customers/customer/Customer';
 import Projects from './routes/projects/Projects';
+import Project from './routes/projects/project/Project';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -28,6 +29,8 @@ root.render(
             <Route path=":id" element={<Customer operation="PUT" />} />
           </Route>
           <Route path="projects" element={<Projects />}>
+            <Route path="add" element={<Project operation="POST" />} />
+            <Route path=":id" element={<Project operation="PUT" />} />
           </Route>
         </Route>
       </Routes>
