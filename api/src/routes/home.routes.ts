@@ -11,6 +11,7 @@ router.get('/', (_req, res) => {
       .add(new Link('self', '/'))
       .add(new Link('timers', '/timers'))
       .add(new Link('customers', '/customers'))
+      .add(new Link('projects', '/projects'))
       .serialize()
   });
 });
