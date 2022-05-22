@@ -19,15 +19,38 @@ export class CustomersKnex implements Customers {
     return customers.map((customer) => new Customer(customer.name, new Id(customer.id)));
   }
 
-  get(customerId: Id): Promise<Customer> {
-    throw new Error('Method not implemented.');
+  async get(customerId: Id): Promise<Customer | null> {
+    const session = await this.provider.getSession();
+    const customer = await session.from(TABLE_NAME)
+      .where({
+        id: customerId.toString()
+      }).select('*')
+      .first<CustomerPersistenceModel>();
+
+    if (!customer)
+      return null;
+
+    return new Customer(customer.name, new Id(customer.id));
   }
 
   async save(customer: Customer): Promise<void> {
     const session = await this.provider.getSession();
+    const existingCustomer = await this.get(customer.id);
 
-    await session<CustomerPersistenceModel>(TABLE_NAME).insert({
-      name: customer.name
-    })
+    if (existingCustomer) {
+      await session<CustomerPersistenceModel>(TABLE_NAME)
+        .where({
+          id: customer.id.toString()
+        })
+        .update({
+          name: customer.name
+        });
+    }
+    else {
+      await session<CustomerPersistenceModel>(TABLE_NAME).insert({
+        id: customer.id.toString(),
+        name: customer.name
+      });
+    }
   }
 }
