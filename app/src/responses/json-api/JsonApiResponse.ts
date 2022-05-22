@@ -5,6 +5,6 @@ export type JsonApiResponse<T> = {
   meta: Meta,
   type?: string,
   id?: string,
-  attributes?: { [key: string]: string },
+  attributes?: { [key: string]: string | boolean },
   data?: ResourceObject<T>[]
 };

@@ -18,17 +18,19 @@ export default function Project({ operation }: Props) {
         POST: [
           { name: 'name', type: 'string', displayName: 'Name', editable: true },
           { name: 'billable', type: 'boolean', displayName: 'Billable', editable: true },
-          { name: 'customer', type: 'string', displayName: 'Customer', editable: true }
+          { name: 'customerId', type: 'customers', displayName: 'Customer', editable: true }
         ],
         PUT: [
           { name: 'name', type: 'string', displayName: 'Name', editable: true },
           { name: 'billable', type: 'boolean', displayName: 'Billable', editable: true },
-          { name: 'customer', type: 'string', displayName: 'Customer', editable: true }
+          { name: 'customerId', type: 'customers', displayName: 'Customer', editable: true }
         ]
       }
     },
     attributes: {
-      name: ''
+      name: '',
+      billable: false,
+      customerId: ''
     }
   });
 
@@ -54,7 +56,8 @@ export default function Project({ operation }: Props) {
     const body = {
       id: project.id,
       name: project.attributes?.name,
-      billable: project.attributes?.billable
+      billable: project.attributes?.billable,
+      customerId: project.attributes?.customerId
     };
     return JSON.stringify(body);
   }

@@ -49,6 +49,12 @@ export default function Projects() {
             <TableColumn>
               <Display>{project.attributes.name}</Display>
             </TableColumn>
+            <TableColumn>
+              <Display>{project.attributes.billable.toString()}</Display>
+            </TableColumn>
+            <TableColumn>
+              <Display>{project.attributes.customerName}</Display>
+            </TableColumn>
             {allowedMethods.indexOf('PUT') > -1 ? (
               <TableColumn>
                 <Link className="button is-link" to={`/projects/${project.id}`}>Update</Link>

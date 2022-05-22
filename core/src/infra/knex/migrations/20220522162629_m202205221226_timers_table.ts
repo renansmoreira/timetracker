@@ -3,9 +3,9 @@ import { Knex } from 'knex';
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
     .createTable('timers', table => {
-      table.string('id');
-      table.bigInteger('startDate');
-      table.bigInteger('endDate');
+      table.string('id').notNullable();
+      table.bigInteger('startDate').nullable();
+      table.bigInteger('endDate').nullable();
     });
 }
 
