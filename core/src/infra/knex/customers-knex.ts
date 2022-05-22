@@ -1,6 +1,7 @@
 import { Customer } from '../../domain/customers/customer';
 import { Customers } from '../../domain/customers/customers';
 import { Id } from '../../domain/id';
+import { NotFoundError } from '../../domain/error/not-found.error';
 import { KnexProvider } from './knex-provider';
 import { CustomerPersistenceModel } from './persistence-definitions/customer.pd';
 
@@ -19,7 +20,7 @@ export class CustomersKnex implements Customers {
     return customers.map((customer) => new Customer(customer.name, new Id(customer.id)));
   }
 
-  async get(customerId: Id): Promise<Customer | null> {
+  async get(customerId: Id): Promise<Customer> {
     const session = await this.provider.getSession();
     const customer = await session.from(TABLE_NAME)
       .where({
@@ -28,16 +29,16 @@ export class CustomersKnex implements Customers {
       .first<CustomerPersistenceModel>();
 
     if (!customer)
-      return null;
+      throw new NotFoundError('Customer');
 
     return new Customer(customer.name, new Id(customer.id));
   }
 
   async save(customer: Customer): Promise<void> {
     const session = await this.provider.getSession();
-    const existingCustomer = await this.get(customer.id);
 
-    if (existingCustomer) {
+    try {
+      await this.get(customer.id);
       await session<CustomerPersistenceModel>(TABLE_NAME)
         .where({
           id: customer.id.toString()
@@ -45,8 +46,7 @@ export class CustomersKnex implements Customers {
         .update({
           name: customer.name
         });
-    }
-    else {
+    } catch {
       await session<CustomerPersistenceModel>(TABLE_NAME).insert({
         id: customer.id.toString(),
         name: customer.name
