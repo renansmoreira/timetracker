@@ -12,6 +12,7 @@ app
     methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
     exposedHeaders: 'Allow'
   }))
+  .use(express.json())
   .use(HomeRoutes)
   .use(TimerRoutes)
   .use(CustomerRoutes)
