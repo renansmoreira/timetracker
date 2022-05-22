@@ -9,6 +9,10 @@ export class Customer {
     this._name = name;
   }
 
+  changeName(newName: string): void {
+    this._name = newName;
+  }
+
   get id(): Id {
     return this._id;
   }
