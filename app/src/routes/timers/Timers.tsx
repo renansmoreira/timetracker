@@ -8,6 +8,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import CreateNew from '../../components/create-new/CreateNew';
 import RecordListing from '../../components/record-listing/RecordListing';
 import { emptyJsonApiResponse } from '../../responses/json-api/EmptyJsonApiResponse';
+import Display from '../../components/display/Display';
 
 export default function Timers() {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +47,15 @@ export default function Timers() {
       <RecordListing models={timers} allowedMethods={allowedMethods}>
         {timers.data?.map((timer) => (
           <TableLine key={timer.id}>
+            <TableColumn>
+              <Display>{timer.attributes.description}</Display>
+            </TableColumn>
+            <TableColumn>
+              <Display>{timer.attributes.projectName}</Display>
+            </TableColumn>
+            <TableColumn>
+              <Display>{timer.attributes.billable}</Display>
+            </TableColumn>
             <TableColumn>
               <Datetime value={timer.attributes.startDate} />
             </TableColumn>

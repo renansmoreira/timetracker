@@ -15,11 +15,22 @@ export default function Timer({ operation }: Props) {
   const [timer, setTimer] = useState<JsonApiResponse<TimerSchema>>({
     meta: {
       template: {
-        POST: [],
-        PUT: []
+        POST: [
+          { name: 'description', type: 'string', displayName: 'Description', editable: true },
+          { name: 'billable', type: 'boolean', displayName: 'Billable', editable: true },
+          { name: 'projectId', type: 'projects', displayName: 'Project', editable: true }
+        ],
+        PUT: [
+          { name: 'description', type: 'string', displayName: 'Description', editable: true },
+          { name: 'billable', type: 'boolean', displayName: 'Billable', editable: true },
+          { name: 'projectId', type: 'projects', displayName: 'Project', editable: true }
+        ]
       }
     },
     attributes: {
+      description: '',
+      billable: '',
+      projectId: '',
       startDate: '',
       endDate: ''
     }
@@ -44,11 +55,11 @@ export default function Timer({ operation }: Props) {
   }, []);
 
   const getBody = () => {
-    if (operation === 'POST')
-      return '';
-
     const body = {
-      id: timer.id
+      id: timer.id,
+      billable: timer.attributes?.billable,
+      description: timer.attributes?.description,
+      projectId: timer.attributes?.projectId
     };
     return JSON.stringify(body);
   }
@@ -58,7 +69,7 @@ export default function Timer({ operation }: Props) {
     await fetch(`http://localhost:3100/timers/${params.id || ''}`, {
       method: operation,
       headers: {
-        'Content-Type': 'application/vnd.api+json'
+        'Content-Type': 'application/json'
       },
       body: getBody()
     });

@@ -50,7 +50,10 @@ export default function Projects() {
               <Display>{project.attributes.name}</Display>
             </TableColumn>
             <TableColumn>
-              <Display>{project.attributes.billable.toString()}</Display>
+              <Display>{project.attributes.currency?.toString()}</Display>
+            </TableColumn>
+            <TableColumn>
+              <Display>{project.attributes.valuePerHour?.toString()}</Display>
             </TableColumn>
             <TableColumn>
               <Display>{project.attributes.customerName}</Display>

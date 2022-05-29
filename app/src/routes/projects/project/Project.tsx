@@ -17,20 +17,23 @@ export default function Project({ operation }: Props) {
       template: {
         POST: [
           { name: 'name', type: 'string', displayName: 'Name', editable: true },
-          { name: 'billable', type: 'boolean', displayName: 'Billable', editable: true },
+          { name: 'currency', type: 'currencies', displayName: 'Currency', editable: true },
+          { name: 'valuePerHour', type: 'decimal', displayName: 'Value per hour', editable: true },
           { name: 'customerId', type: 'customers', displayName: 'Customer', editable: true }
         ],
         PUT: [
           { name: 'name', type: 'string', displayName: 'Name', editable: true },
-          { name: 'billable', type: 'boolean', displayName: 'Billable', editable: true },
+          { name: 'currency', type: 'currencies', displayName: 'Currency', editable: true },
+          { name: 'valuePerHour', type: 'decimal', displayName: 'Value per hour', editable: true },
           { name: 'customerId', type: 'customers', displayName: 'Customer', editable: true }
         ]
       }
     },
     attributes: {
       name: '',
-      billable: false,
-      customerId: ''
+      customerId: '',
+      valuePerHour: '',
+      currency: ''
     }
   });
 
@@ -56,7 +59,8 @@ export default function Project({ operation }: Props) {
     const body = {
       id: project.id,
       name: project.attributes?.name,
-      billable: project.attributes?.billable,
+      valuePerHour: project.attributes?.valuePerHour,
+      currency: project.attributes?.currency,
       customerId: project.attributes?.customerId
     };
     return JSON.stringify(body);
