@@ -10,6 +10,7 @@ export class Timer {
   private _project?: Project;
   private _startDate?: DateRepresentation;
   private _endDate?: DateRepresentation;
+  private _elapsedTime?: number;
 
   constructor(id?: Id, startDate?: DateRepresentation,
     endDate?: DateRepresentation, billable?: boolean, description?: string, project? : Project) {
@@ -25,13 +26,12 @@ export class Timer {
     this._startDate = new DateRepresentation();
   }
 
-  end(): DateRepresentation {
+  end(): void {
     if (!this._startDate)
       throw new TimerNotStartedException();
 
     this._endDate = new DateRepresentation();
-
-    return this._endDate?.minus(this._startDate);
+    this._elapsedTime = this._endDate?.minus(this._startDate).timestamp;
   }
 
   get id(): Id {

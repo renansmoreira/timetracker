@@ -62,6 +62,9 @@ export default function Timers() {
             <TableColumn>
               <Datetime value={timer.attributes.endDate} />
             </TableColumn>
+            <TableColumn>
+              <Display>{timer.attributes.elapsedTime}</Display>
+            </TableColumn>
             {allowedMethods.indexOf('PUT') > -1 ? (
               <TableColumn>
                 <Link className="button is-link" to={`/timers/${timer.id}`}>Update</Link>

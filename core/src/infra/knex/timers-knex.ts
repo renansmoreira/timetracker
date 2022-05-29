@@ -18,7 +18,9 @@ export class TimersKnex implements Timers {
 
   async getAll(): Promise<Timer[]> {
     const session = await this.provider.getSession();
-    const timers = await session.select('*').from<TimerPersistenceModel>(TABLE_NAME);
+    const timers = await session.select('*')
+      .from<TimerPersistenceModel>(TABLE_NAME)
+      .orderBy('startDate', 'desc');
     const foundTimers = [];
 
     for (let timer of timers) {
@@ -30,6 +32,7 @@ export class TimersKnex implements Timers {
         timer.description,
         await this.projects.get(new Id(timer.projectId))
       );
+      newTimer['_elapsedTime'] = timer.elapsedTime;
       foundTimers.push(newTimer);
     }
 
@@ -62,7 +65,8 @@ export class TimersKnex implements Timers {
       billable: timer.billable,
       projectId: timer.project?.id.toString(),
       startDate: timer.startDate?.timestamp,
-      endDate: timer.endDate?.timestamp
+      endDate: timer.endDate?.timestamp,
+      elapsedTime: timer['_elapsedTime']
     });
   }
 
@@ -74,7 +78,8 @@ export class TimersKnex implements Timers {
       })
       .update({
         startDate: timer.startDate?.timestamp,
-        endDate: timer.endDate?.timestamp
+        endDate: timer.endDate?.timestamp,
+        elapsedTime: timer['_elapsedTime']
       });
   }
 }

@@ -23,7 +23,8 @@ router.get('/timers', async (_req, res) => {
       projectName: timer.project?.name,
       billable: timer.billable,
       startDate: timer.startDate?.timestamp,
-      endDate: timer.endDate?.timestamp
+      endDate: timer.endDate?.timestamp,
+      elapsedTime: timer['_elapsedTime']
     }
   }));
 
@@ -37,7 +38,8 @@ router.get('/timers', async (_req, res) => {
             { name: 'projectName', type: 'string', displayName: 'Project' },
             { name: 'billable', type: 'boolean', displayName: 'Billable' },
             { name: 'startDate', type: 'datetime', displayName: 'Start date' },
-            { name: 'endDate', type: 'datetime', displayName: 'End date' }
+            { name: 'endDate', type: 'datetime', displayName: 'End date' },
+            { name: 'elapsedTime', type: 'number', displayName: 'Elapsed time' }
           ]
         }
       },

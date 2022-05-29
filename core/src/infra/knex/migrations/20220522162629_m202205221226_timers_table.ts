@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('description').nullable();
       table.bigInteger('startDate').nullable();
       table.bigInteger('endDate').nullable();
+      table.bigInteger('elapsedTime').nullable();
       table.string('projectId').unsigned().notNullable();
       table.foreign('projectId', 'FK_Projects_Customers')
         .references('id')

@@ -5,4 +5,5 @@ export interface TimerPersistenceModel {
   projectId?: string;
   startDate?: number;
   endDate?: number;
+  elapsedTime?: number;
 }

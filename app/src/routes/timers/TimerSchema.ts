@@ -4,5 +4,6 @@ export type TimerSchema = {
   billable?: boolean,
   projectName?: string,
   startDate?: string,
-  endDate?: string
+  endDate?: string,
+  elapsedTime?: number
 };

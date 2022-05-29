@@ -100,8 +100,8 @@ describe('Timer', () => {
     const expectedTimeInMs = baseTime - startPastTime;
     const timer = new Timer(new Id('1'), new DateRepresentation(startPastTime));
 
-    const elapsedTime = timer.end();
+    timer.end();
 
-    expect(elapsedTime.timestamp).to.be.closeTo(expectedTimeInMs, 5);
+    expect(timer['_elapsedTime']).to.be.closeTo(expectedTimeInMs, 5);
   });
 })
