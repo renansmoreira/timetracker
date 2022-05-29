@@ -5,4 +5,5 @@ export interface Timers {
   getAll(): Promise<Timer[]>;
   get(timerId: Id): Promise<Timer>;
   save(timer: Timer): Promise<void>;
+  update(timer: Timer): Promise<void>;
 }

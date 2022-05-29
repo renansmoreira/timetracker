@@ -36,21 +36,20 @@ export class CustomersKnex implements Customers {
 
   async save(customer: Customer): Promise<void> {
     const session = await this.provider.getSession();
+    await session<CustomerPersistenceModel>(TABLE_NAME).insert({
+      id: customer.id.toString(),
+      name: customer.name
+    });
+  }
 
-    try {
-      await this.get(customer.id);
-      await session<CustomerPersistenceModel>(TABLE_NAME)
-        .where({
-          id: customer.id.toString()
-        })
-        .update({
-          name: customer.name
-        });
-    } catch {
-      await session<CustomerPersistenceModel>(TABLE_NAME).insert({
-        id: customer.id.toString(),
+  async update(customer: Customer): Promise<void> {
+    const session = await this.provider.getSession();
+    await session<CustomerPersistenceModel>(TABLE_NAME)
+      .where({
+        id: customer.id.toString()
+      })
+      .update({
         name: customer.name
       });
-    }
   }
 }

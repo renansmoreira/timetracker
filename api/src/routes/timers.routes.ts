@@ -99,7 +99,7 @@ router.put('/timers/:id', async (req, res) => {
   const timer = await timers.get(new Id(req.params.id));
   timer.end();
 
-  await timers.save(timer);
+  await timers.update(timer);
 
   res.json({
     type: 'timers',

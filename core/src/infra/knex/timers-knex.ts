@@ -56,26 +56,25 @@ export class TimersKnex implements Timers {
 
   async save(timer: Timer): Promise<void> {
     const session = await this.provider.getSession();
+    await session<TimerPersistenceModel>(TABLE_NAME).insert({
+      id: timer.id.toString(),
+      description: timer.description,
+      billable: timer.billable,
+      projectId: timer.project?.id.toString(),
+      startDate: timer.startDate?.timestamp,
+      endDate: timer.endDate?.timestamp
+    });
+  }
 
-    try {
-      await this.get(timer.id);
-      await session<TimerPersistenceModel>(TABLE_NAME)
-        .where({
-          id: timer.id.toString()
-        })
-        .update({
-          startDate: timer.startDate?.timestamp,
-          endDate: timer.endDate?.timestamp
-        });
-    } catch {
-      await session<TimerPersistenceModel>(TABLE_NAME).insert({
-        id: timer.id.toString(),
-        description: timer.description,
-        billable: timer.billable,
-        projectId: timer.project?.id.toString(),
+  async update(timer: Timer): Promise<void> {
+    const session = await this.provider.getSession();
+    await session<TimerPersistenceModel>(TABLE_NAME)
+      .where({
+        id: timer.id.toString()
+      })
+      .update({
         startDate: timer.startDate?.timestamp,
         endDate: timer.endDate?.timestamp
       });
-    }
   }
 }

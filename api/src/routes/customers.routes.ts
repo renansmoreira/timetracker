@@ -95,7 +95,7 @@ router.put('/customers/:id', async (req, res) => {
     const customer = await customers.get(id);
 
     customer.changeName(req.body.name);
-    await customers.save(customer);
+    await customers.update(customer);
 
     res.json({
       type: 'customers',
