@@ -6,6 +6,8 @@ import { KnexProvider } from 'timetracker-core/src/infra/knex/knex-provider';
 import { Project } from 'timetracker-core/src/domain/projects/project';
 import { Id } from 'timetracker-core/src/domain/id';
 import { CustomersKnex } from 'timetracker-core/src/infra/knex/customers-knex';
+import { Money } from 'timetracker-core/src/domain/remunerations/money';
+import { Currency } from 'timetracker-core/src/domain/remunerations/currency';
 
 const router = express.Router();
 const provider = new KnexProvider();
@@ -19,7 +21,8 @@ router.get('/projects', async (_req, res) => {
     id: project.id.toString(),
     attributes: {
       name: project.name,
-      billable: project.billable,
+      valuePerHour: project.valuePerHour?.amount,
+      currency: project.valuePerHour?.currency.toString(),
       customerName: project.customer.name
     }
   }));
@@ -31,7 +34,8 @@ router.get('/projects', async (_req, res) => {
         template: {
           GET: [
             { name: 'name', type: 'string', displayName: 'Name' },
-            { name: 'billable', type: 'boolean', displayName: 'Billable' },
+            { name: 'currency', type: 'currencies', displayName: 'Currency' },
+            { name: 'valuePerHour', type: 'decimal', displayName: 'Value per hour' },
             { name: 'customer', type: 'string', displayName: 'Customer name' }
           ]
         }
@@ -46,7 +50,8 @@ router.get('/projects', async (_req, res) => {
 
 router.post('/projects', async (req, res) => {
   const customer = await customers.get(new Id(req.body.customerId));
-  const project = new Project(req.body.name, req.body.billable, customer);
+  const valuePerHour = req.body.valuePerHour ? new Money(req.body.valuePerHour, Currency.REAL) : undefined;
+  const project = new Project(req.body.name, customer, valuePerHour);
   await projects.save(project);
 
   res.json({

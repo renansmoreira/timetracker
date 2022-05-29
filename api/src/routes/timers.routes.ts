@@ -1,14 +1,17 @@
 import express from 'express';
 import { Id } from 'timetracker-core/src/domain/id';
 import { Timer } from 'timetracker-core/src/domain/timers/timer';
+import { CustomersKnex } from 'timetracker-core/src/infra/knex/customers-knex';
 import { KnexProvider } from 'timetracker-core/src/infra/knex/knex-provider';
+import { ProjectsKnex } from 'timetracker-core/src/infra/knex/projects-knex';
 import { TimersKnex } from 'timetracker-core/src/infra/knex/timers-knex';
 import { Link } from '../serializers/json-api/link';
 import { Links } from '../serializers/json-api/links';
 
 const router = express.Router();
 const provider = new KnexProvider();
-const timers = new TimersKnex(provider);
+const projects = new ProjectsKnex(provider, new CustomersKnex(provider));
+const timers = new TimersKnex(provider, projects);
 
 router.get('/timers', async (_req, res) => {
   const foundTimers = await timers.getAll();
@@ -16,6 +19,9 @@ router.get('/timers', async (_req, res) => {
     type: 'timers',
     id: timer.id.toString(),
     attributes: {
+      description: timer.description,
+      projectName: timer.project?.name,
+      billable: timer.billable,
       startDate: timer.startDate?.timestamp,
       endDate: timer.endDate?.timestamp
     }
@@ -27,6 +33,9 @@ router.get('/timers', async (_req, res) => {
       meta: {
         template: {
           GET: [
+            { name: 'description', type: 'string', displayName: 'Description' },
+            { name: 'projectName', type: 'string', displayName: 'Project' },
+            { name: 'billable', type: 'boolean', displayName: 'Billable' },
             { name: 'startDate', type: 'datetime', displayName: 'Start date' },
             { name: 'endDate', type: 'datetime', displayName: 'End date' }
           ]
@@ -69,8 +78,10 @@ router.get('/timers/:id', async (req, res) => {
   });
 });
 
-router.post('/timers', async (_req, res) => {
-  const timer = new Timer();
+router.post('/timers', async (req, res) => {
+  const project = await projects.get(new Id(req.body.projectId));
+  const timer = new Timer(undefined, undefined, undefined,
+    req.body.billable, req.body.description, project);
   timer.start();
   await timers.save(timer);
 
