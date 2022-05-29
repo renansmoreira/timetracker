@@ -5,8 +5,8 @@ import { CustomersKnex } from 'timetracker-core/src/infra/knex/customers-knex';
 import { KnexProvider } from 'timetracker-core/src/infra/knex/knex-provider';
 import { ProjectsKnex } from 'timetracker-core/src/infra/knex/projects-knex';
 import { TimersKnex } from 'timetracker-core/src/infra/knex/timers-knex';
-import { Link } from '../serializers/json-api/link';
-import { Links } from '../serializers/json-api/links';
+import { Link } from 'timetracker-lib-json-api/src/builders/link';
+import { Links } from 'timetracker-lib-json-api/src/builders/links';
 
 const router = express.Router();
 const provider = new KnexProvider();

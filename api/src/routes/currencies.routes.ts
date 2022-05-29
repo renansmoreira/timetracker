@@ -1,6 +1,6 @@
 import express from 'express';
-import { Link } from '../serializers/json-api/link';
-import { Links } from '../serializers/json-api/links';
+import { Link } from 'timetracker-lib-json-api/src/builders/link';
+import { Links } from 'timetracker-lib-json-api/src/builders/links';
 import { Currency } from 'timetracker-core/src/domain/remunerations/currency';
 
 const router = express.Router();

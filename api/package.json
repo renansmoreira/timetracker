@@ -32,7 +32,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
-    "timetracker-core": "file:../core"
+    "timetracker-core": "file:../core",
+    "timetracker-lib-json-api": "file:../lib/json-api"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",

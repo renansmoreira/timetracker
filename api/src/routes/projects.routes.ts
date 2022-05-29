@@ -1,6 +1,6 @@
 import express from 'express';
-import { Link } from '../serializers/json-api/link';
-import { Links } from '../serializers/json-api/links';
+import { Link } from 'timetracker-lib-json-api/src/builders/link';
+import { Links } from 'timetracker-lib-json-api/src/builders/links';
 import { ProjectsKnex } from 'timetracker-core/src/infra/knex/projects-knex';
 import { KnexProvider } from 'timetracker-core/src/infra/knex/knex-provider';
 import { Project } from 'timetracker-core/src/domain/projects/project';
