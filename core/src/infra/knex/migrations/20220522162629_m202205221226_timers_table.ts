@@ -4,8 +4,14 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema
     .createTable('timers', table => {
       table.string('id').notNullable();
+      table.boolean('billable').notNullable();
+      table.string('description').nullable();
       table.bigInteger('startDate').nullable();
       table.bigInteger('endDate').nullable();
+      table.string('projectId').unsigned().notNullable();
+      table.foreign('projectId', 'FK_Projects_Customers')
+        .references('id')
+        .inTable('projects');
     });
 }
 

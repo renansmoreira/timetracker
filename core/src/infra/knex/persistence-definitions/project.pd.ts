@@ -1,6 +1,7 @@
 export interface ProjectPersistenceModel {
   id: string;
   name: string;
-  billable: boolean;
+  valuePerHour?: number;
+  currency?: string;
   customerId: string;
 }

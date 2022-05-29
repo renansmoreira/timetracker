@@ -1,16 +1,17 @@
 import { Customer } from '../customers/customer';
 import { Id } from '../id';
+import { Money } from '../remunerations/money';
 
 export class Project {
   private _id: Id;
   private _name: string;
-  private _billable: boolean;
+  private _valuePerHour?: Money;
   private _customer: Customer;
 
-  constructor(name: string, billable: boolean, customer: Customer, id?: Id) {
+  constructor(name: string, customer: Customer, valuePerHour?: Money, id?: Id) {
     this._id = id || new Id();
     this._name = name;
-    this._billable = billable;
+    this._valuePerHour = valuePerHour;
     this._customer = customer;
   }
 
@@ -22,8 +23,8 @@ export class Project {
     return this._name;
   }
 
-  get billable(): boolean {
-    return this._billable;
+  get valuePerHour(): Money | undefined {
+    return this._valuePerHour;
   }
 
   get customer(): Customer {

@@ -1,14 +1,69 @@
 import { expect } from 'chai';
+import { Customer } from '../../../src/domain/customers/customer';
 import { DateRepresentation } from '../../../src/domain/date-representation';
 import { Id } from '../../../src/domain/id';
+import { Project } from '../../../src/domain/projects/project';
 import { Timer } from '../../../src/domain/timers/timer';
 import { TimerNotStartedException } from '../../../src/domain/timers/timer-not-started-exception';
 
 describe('Timer', () => {
-  it('should be created', () => {
+  it('should be created with default values', () => {
     const newTimer = new Timer();
 
     expect(newTimer.id).to.be.not.undefined;
+    expect(newTimer.startDate).to.be.undefined;
+    expect(newTimer.endDate).to.be.undefined;
+    expect(newTimer.billable).to.be.false;
+    expect(newTimer.description).to.be.undefined;
+  });
+
+  it('should be created with id', () => {
+    const id = new Id('123');
+
+    const newTimer = new Timer(id);
+
+    expect(newTimer.id).to.equal(id);
+  });
+
+  it('should be created with start timer', () => {
+    const startDate = new DateRepresentation();
+
+    const newTimer = new Timer(undefined, startDate);
+
+    expect(newTimer.startDate).to.equal(startDate);
+  });
+
+  it('should be created with end timer', () => {
+    const endDate = new DateRepresentation();
+
+    const newTimer = new Timer(undefined, undefined, endDate);
+
+    expect(newTimer.endDate).to.equal(endDate);
+  });
+
+  it('should be created indicating if it is billable or not', () => {
+    const isBillable = true;
+
+    const newTimer = new Timer(undefined, undefined, undefined, isBillable);
+
+    expect(newTimer.billable).to.equal(isBillable);
+  });
+
+  it('should be created with description', () => {
+    const description = 'description';
+
+    const newTimer = new Timer(undefined, undefined, undefined, undefined, description);
+
+    expect(newTimer.description).to.equal(description);
+  });
+
+  it('should be created with project', () => {
+    const customer = new Customer('customer');
+    const project = new Project('name', customer);
+
+    const newTimer = new Timer(undefined, undefined, undefined, undefined, undefined, project);
+
+    expect(newTimer.project).to.equal(project);
   });
 
   it('should be started', () => {

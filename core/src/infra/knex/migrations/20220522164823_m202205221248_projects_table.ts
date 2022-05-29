@@ -5,7 +5,8 @@ export async function up(knex: Knex): Promise<void> {
     .createTable('projects', table => {
       table.string('id').notNullable();
       table.string('name').notNullable();
-      table.boolean('billable').notNullable();
+      table.decimal('valuePerHour').nullable();
+      table.string('currency').nullable();
       table.string('customerId').unsigned().notNullable();
       table.foreign('customerId', 'FK_Projects_Customers')
         .references('id')

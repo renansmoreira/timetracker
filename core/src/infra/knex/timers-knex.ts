@@ -5,24 +5,35 @@ import { Timers } from '../../domain/timers/timers';
 import { Timer } from '../../domain/timers/timer';
 import { DateRepresentation } from '../../domain/date-representation';
 import { TimerPersistenceModel } from './persistence-definitions/timer.pd';
+import { Projects } from '../../domain/projects/projects';
 
 const TABLE_NAME = 'timers';
 
 export class TimersKnex implements Timers {
 
   constructor(
-    private provider: KnexProvider
+    private provider: KnexProvider,
+    private projects: Projects
   ) { }
 
   async getAll(): Promise<Timer[]> {
     const session = await this.provider.getSession();
     const timers = await session.select('*').from<TimerPersistenceModel>(TABLE_NAME);
+    const foundTimers = [];
 
-    return timers.map((timer) => new Timer(
-      new Id(timer.id),
-      timer.startDate !== null ? new DateRepresentation(timer?.startDate) : undefined,
-      timer.endDate !== null ? new DateRepresentation(timer?.endDate) : undefined
-    ));
+    for (let timer of timers) {
+      const newTimer = new Timer(
+        new Id(timer.id),
+        timer.startDate !== null ? new DateRepresentation(timer?.startDate) : undefined,
+        timer.endDate !== null ? new DateRepresentation(timer?.endDate) : undefined,
+        timer.billable,
+        timer.description,
+        await this.projects.get(new Id(timer.projectId))
+      );
+      foundTimers.push(newTimer);
+    }
+
+    return foundTimers;
   }
 
   async get(timerId: Id): Promise<Timer> {
@@ -38,7 +49,8 @@ export class TimersKnex implements Timers {
 
     return new Timer(
       new Id(timer.id),
-      timer.startDate !== null ? new DateRepresentation(timer?.startDate) : undefined
+      timer.startDate !== null ? new DateRepresentation(timer?.startDate) : undefined,
+      timer.endDate !== null ? new DateRepresentation(timer?.endDate) : undefined,
     );
   }
 
@@ -58,6 +70,9 @@ export class TimersKnex implements Timers {
     } catch {
       await session<TimerPersistenceModel>(TABLE_NAME).insert({
         id: timer.id.toString(),
+        description: timer.description,
+        billable: timer.billable,
+        projectId: timer.project?.id.toString(),
         startDate: timer.startDate?.timestamp,
         endDate: timer.endDate?.timestamp
       });

@@ -11,6 +11,13 @@ describe('Money', () => {
     expect(money.amount).to.be.equal(expectedAmount);
   });
 
+  it('should be created without value', () => {
+    const money = new Money();
+
+    expect(money.amount).to.be.equal(0);
+    expect(money.currency).to.be.equal(Currency.REAL);
+  });
+
   it('should be created with currency', () => {
     const expectedCurrency = Currency.REAL;
 
