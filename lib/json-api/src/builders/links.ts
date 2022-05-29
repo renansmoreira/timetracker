@@ -5,7 +5,7 @@ import { Link } from './link';
 export class Links implements JsonApiItem<LinksSchema> {
   private _links: Link[];
 
-  constructor() {
+  private constructor() {
     this._links = [];
   }
 
