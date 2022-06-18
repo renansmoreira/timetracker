@@ -63,7 +63,7 @@ export default function Timers() {
               <Datetime value={timer.attributes.endDate} />
             </TableColumn>
             <TableColumn>
-              <Display>{timer.attributes.elapsedTime}</Display>
+              <Display type="time">{timer.attributes.elapsedTime}</Display>
             </TableColumn>
             {allowedMethods.indexOf('PUT') > -1 ? (
               <TableColumn>

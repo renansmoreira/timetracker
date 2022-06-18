@@ -39,7 +39,7 @@ router.get('/timers', async (_req, res) => {
             { name: 'billable', type: 'boolean', displayName: 'Billable' },
             { name: 'startDate', type: 'datetime', displayName: 'Start date' },
             { name: 'endDate', type: 'datetime', displayName: 'End date' },
-            { name: 'elapsedTime', type: 'number', displayName: 'Elapsed time' }
+            { name: 'elapsedTime', type: 'time', displayName: 'Elapsed time' }
           ]
         }
       },
