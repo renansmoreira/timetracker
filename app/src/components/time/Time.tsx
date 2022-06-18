@@ -12,9 +12,9 @@ export default function Time({ value }: Props) {
 
   const valueInSeconds = parseInt((value || '').toString()) / 1000;
   const hours = valueInSeconds / 3600;
-  const minutes = valueInSeconds / 60;
-  const seconds = (60 * (minutes % 1))/100;
-  const displayValue = `${padLeft(hours - hours % 1)}:${padLeft(minutes - minutes % 1)}:${seconds.toString().substring(2, 4)}`;
+  const minutes = (60 * (hours % 1)) / 100;
+  const seconds = (60 * (minutes % 1)) / 100;
+  const displayValue = `${padLeft(hours - hours % 1)}:${minutes.toString().substring(2, 4)}:${seconds.toString().substring(2, 4)}`;
 
   return (
     <span>{displayValue}</span>
