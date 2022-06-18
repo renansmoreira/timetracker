@@ -54,7 +54,7 @@ export default function Timers() {
               <Display>{timer.attributes.projectName}</Display>
             </TableColumn>
             <TableColumn>
-              <Display>{timer.attributes.billable}</Display>
+              <Display type="boolean">{timer.attributes.billable}</Display>
             </TableColumn>
             <TableColumn>
               <Datetime value={timer.attributes.startDate} />
