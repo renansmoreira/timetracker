@@ -54,6 +54,9 @@ export class TimersKnex implements Timers {
       new Id(timer.id),
       timer.startDate !== null ? new DateRepresentation(timer?.startDate) : undefined,
       timer.endDate !== null ? new DateRepresentation(timer?.endDate) : undefined,
+      timer.billable,
+      timer.description,
+      await this.projects.get(new Id(timer.projectId))
     );
   }
 
