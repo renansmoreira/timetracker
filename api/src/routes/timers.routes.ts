@@ -1,11 +1,10 @@
 import express from 'express';
 import { Id } from 'timetracker-core/src/domain/id';
-import { Timer } from 'timetracker-core/src/domain/timers/timer';
 import { CustomersKnex } from 'timetracker-core/src/infra/knex/customers-knex';
 import { KnexProvider } from 'timetracker-core/src/infra/knex/knex-provider';
 import { ProjectsKnex } from 'timetracker-core/src/infra/knex/projects-knex';
 import { TimersKnex } from 'timetracker-core/src/infra/knex/timers-knex';
-import { AddNewTimer } from 'timetracker-core/src/use-cases';
+import { AddNewTimer, FinishTimer } from 'timetracker-core/src/use-cases';
 import { Link } from 'timetracker-lib-json-api/src/builders/link';
 import { Links } from 'timetracker-lib-json-api/src/builders/links';
 
@@ -14,6 +13,7 @@ const provider = new KnexProvider();
 const projects = new ProjectsKnex(provider, new CustomersKnex(provider));
 const timers = new TimersKnex(provider, projects);
 const addNewTimer = new AddNewTimer(projects, timers);
+const finishTimer = new FinishTimer(timers);
 
 router.get('/timers', async (_req, res) => {
   const foundTimers = await timers.getAll();
@@ -100,17 +100,14 @@ router.post('/timers', async (req, res) => {
 });
 
 router.put('/timers/:id', async (req, res) => {
-  const timer = await timers.get(new Id(req.params.id));
-  timer.end();
-
-  await timers.update(timer);
+  const timerId = await finishTimer.execute({ id: req.params.id });
 
   res.json({
     type: 'timers',
-    id: timer.id,
+    id: timerId,
     relationships: {},
     links: Links.new()
-      .add(new Link('self', `/timers/${timer.id}`))
+      .add(new Link('self', `/timers/${timerId}`))
       .serialize()
   });
 });
