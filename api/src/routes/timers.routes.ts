@@ -5,6 +5,7 @@ import { CustomersKnex } from 'timetracker-core/src/infra/knex/customers-knex';
 import { KnexProvider } from 'timetracker-core/src/infra/knex/knex-provider';
 import { ProjectsKnex } from 'timetracker-core/src/infra/knex/projects-knex';
 import { TimersKnex } from 'timetracker-core/src/infra/knex/timers-knex';
+import { AddNewTimer } from 'timetracker-core/src/use-cases';
 import { Link } from 'timetracker-lib-json-api/src/builders/link';
 import { Links } from 'timetracker-lib-json-api/src/builders/links';
 
@@ -12,6 +13,7 @@ const router = express.Router();
 const provider = new KnexProvider();
 const projects = new ProjectsKnex(provider, new CustomersKnex(provider));
 const timers = new TimersKnex(provider, projects);
+const addNewTimer = new AddNewTimer(projects, timers);
 
 router.get('/timers', async (_req, res) => {
   const foundTimers = await timers.getAll();
@@ -81,18 +83,18 @@ router.get('/timers/:id', async (req, res) => {
 });
 
 router.post('/timers', async (req, res) => {
-  const project = await projects.get(new Id(req.body.projectId));
-  const timer = new Timer(undefined, undefined, undefined,
-    req.body.billable, req.body.description, project);
-  timer.start();
-  await timers.save(timer);
+  const newTimerId = await addNewTimer.execute({
+    projectId: req.body.projectId,
+    billable: req.body.billable,
+    description: req.body.description
+  });
 
   res.json({
     type: 'timers',
-    id: timer.id,
+    id: newTimerId,
     relationships: {},
     links: Links.new()
-      .add(new Link('self', `/timers/${timer.id}`))
+      .add(new Link('self', `/timers/${newTimerId}`))
       .serialize()
   });
 });
